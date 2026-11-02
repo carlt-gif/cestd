@@ -5,315 +5,157 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Save the Date - Carl & Emma</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Comic+Neue:wght@400;700&display=swap');
-
         body {
             margin: 0;
-            padding: 20px;
-            background-color: #f0f8ff;
-            font-family: 'Comic Neue', sans-serif;
+            padding: 0;
+            background-color: #f7f9fa;
+            font-family: sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            box-sizing: border-box;
+            overflow-x: hidden;
         }
 
-        /* Lined Notebook Paper Aesthetic */
-        .notebook-page {
-            width: 100%;
-            max-width: 450px;
-            background: #fff;
-            background-image: linear-gradient(#e1f0fa 1px, transparent 1px);
-            background-size: 100% 28px;
+        .card-container {
             position: relative;
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1 / 1.44;
+            background-image: url('image_ipLfch.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            padding: 40px 30px 40px 50px;
-            box-sizing: border-box;
-            text-align: center;
-            overflow: hidden;
         }
 
-        /* Red Margin Line */
-        .notebook-page::before {
-            content: '';
+        .hearts-container {
             position: absolute;
             top: 0;
-            left: 40px;
-            width: 2px;
-            height: 100%;
-            background-color: #ffb6c1;
-        }
-
-        .header-text {
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: #333;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-
-        /* Center Doodle Illustration Container */
-        .doodle-container {
-            position: relative;
-            width: 220px;
-            height: 220px;
-            margin: 0 auto 15px auto;
-        }
-
-        /* Floating/Rotating Hearts */
-        .floating-heart {
-            position: absolute;
-            font-size: 1.5rem;
-            color: #222;
-            user-select: none;
-            animation: floatAndRotate 4s ease-in-out infinite alternate;
-        }
-
-        @keyframes floatAndRotate {
-            0% {
-                transform: translateY(0) rotate(-10deg) scale(0.9);
-            }
-            100% {
-                transform: translateY(-15px) rotate(15deg) scale(1.1);
-            }
-        }
-
-        /* Main Doodle Sketch using SVG */
-        .main-doodle {
+            left: 0;
             width: 100%;
             height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 10;
         }
 
-        .names-container {
-            font-family: 'Caveat', cursive;
-            line-height: 0.95;
-            margin-bottom: 15px;
+        .heart {
+            position: absolute;
+            bottom: -20px;
+            font-size: 24px;
+            animation: floatUp 6s linear infinite;
+            opacity: 0;
         }
 
-        .ampersand {
-            font-size: 2.2rem;
-            color: #e56b6f;
-            display: block;
-            margin-bottom: -10px;
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            10% { opacity: 0.8; }
+            50% { transform: translateY(-40vh) translateX(25px) rotate(180deg) scale(1.1); }
+            90% { opacity: 0.8; }
+            100% {
+                transform: translateY(-90vh) translateX(-25px) rotate(360deg) scale(0.9);
+                opacity: 0;
+            }
         }
 
-        .name {
-            font-size: 4.5rem;
-            color: #e56b6f;
-            margin: 0;
-            font-weight: 700;
-        }
-
-        .announcement {
-            color: #e56b6f;
-            font-weight: 700;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-        }
-
-        .divider-arrow {
-            width: 80px;
-            height: auto;
-            margin: 0 auto 10px auto;
-            display: block;
-        }
-
-        .date-text {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .location-text {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #555;
-            letter-spacing: 0.5px;
-            margin-bottom: 25px;
-        }
-
-        .rsvp-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #333;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-
-        /* RSVP Buttons Style */
-        .btn-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 25px;
-            height: 70px;
-        }
-
-        .rsvp-btn {
-            font-family: 'Caveat', cursive;
-            font-size: 2.5rem;
-            border: none;
-            background: none;
+        .btn-overlay {
+            position: absolute;
             cursor: pointer;
-            padding: 5px 25px;
-            border-radius: 30px;
-            transition: all 0.2s ease-in-out;
-            outline: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            border-radius: 50px;
+            transition: transform 0.2s ease, opacity 0.2s ease;
         }
 
-        .btn-yes {
-            color: #ffffff;
-            background-color: #00b4d8;
-            border: 3px solid #0077b6;
-            box-shadow: 0 4px 0 #0077b6;
+        #yesBtn {
+            bottom: 6.8%;
+            left: 28%;
+            width: 19%;
+            height: 6.5%;
+            z-index: 20;
         }
 
-        .btn-yes:hover {
-            transform: scale(1.1);
-        }
-
-        .btn-yes:active {
-            transform: translateY(4px);
-            box-shadow: 0 0px 0 #0077b6;
-        }
-
-        .btn-no {
-            color: #ffffff;
-            background-color: #ff85a1;
-            border: 3px solid #ff477e;
-            box-shadow: 0 4px 0 #ff477e;
+        #noBtn {
+            bottom: 6.8%;
+            right: 28%;
+            width: 19%;
+            height: 6.5%;
+            z-index: 20;
             transform-origin: center;
         }
 
-        .btn-no:active {
-            transform: translateY(4px);
-            box-shadow: 0 0px 0 #ff477e;
+        @keyframes shake {
+            0%, 100% { transform: translateX(0) scale(1); }
+            20%, 60% { transform: translateX(-8px) scale(1.1); }
+            40%, 80% { transform: translateX(8px) scale(1.1); }
+        }
+
+        .shake-animation {
+            animation: shake 0.4s ease-in-out;
         }
     </style>
 </head>
 <body>
 
-<div class="notebook-page">
-    <div class="header-text">Save the Date Because</div>
-
-    <div class="doodle-container">
-        <!-- Floating Animated Hearts -->
-        <span class="floating-heart" style="top: 20px; left: 10px; animation-delay: 0s;">♥</span>
-        <span class="floating-heart" style="top: 55px; left: -5px; animation-delay: 0.3s; font-size: 1.1rem;">♥</span>
-        <span class="floating-heart" style="top: 90px; left: 15px; animation-delay: 0.6s;">♥</span>
-        <span class="floating-heart" style="top: 130px; left: 5px; animation-delay: 0.1s; font-size: 1.3rem;">♥</span>
-        
-        <span class="floating-heart" style="top: 15px; right: 15px; animation-delay: 0.2s; font-size: 1.2rem;">♥</span>
-        <span class="floating-heart" style="top: 50px; right: -5px; animation-delay: 0.5s;">♥</span>
-        <span class="floating-heart" style="top: 85px; right: 20px; animation-delay: 0.8s; font-size: 1.4rem;">♥</span>
-        <span class="floating-heart" style="top: 125px; right: 5px; animation-delay: 0.4s;">♥</span>
-
-        <!-- SVG Line Art Doodle reproducing the couple inside the heart frame -->
-        <svg class="main-doodle" viewBox="0 0 100 100" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <!-- Heart Outline Frame -->
-            <path d="M 50,32 C 45,18 22,18 22,36 C 22,54 44,66 50,72 C 56,66 78,54 78,36 C 78,18 55,18 50,32 Z" stroke-width="2.5"/>
-            <!-- Flowers on Left Curve -->
-            <circle cx="25" cy="24" r="2" fill="#fff"/>
-            <path d="M 23,22 Q 25,20 27,22 Q 29,24 27,26 Q 25,28 23,26 Q 21,24 23,22 Z" stroke-width="1.2"/>
-            <!-- Flowers on Right Curve -->
-            <circle cx="75" cy="24" r="2" fill="#fff"/>
-            <path d="M 73,22 Q 75,20 77,22 Q 79,24 77,26 Q 75,28 73,26 Q 71,24 73,22 Z" stroke-width="1.2"/>
-            
-            <!-- Left Character (Groom-ish) -->
-            <!-- Head -->
-            <path d="M 44,45 C 44,38 36,38 36,45 C 36,52 44,52 44,45 Z" fill="#fff"/>
-            <!-- Eyes -->
-            <circle cx="38.5" cy="44" r="0.7" fill="#222"/>
-            <circle cx="41.5" cy="44" r="0.7" fill="#222"/>
-            <!-- Bowtie -->
-            <path d="M 39,52 L 41,54 L 41,52 L 39,54 Z" fill="#222" stroke-width="1"/>
-            <!-- Body/Arms -->
-            <path d="M 35,52 L 35,68 M 45,52 L 45,68 M 38,68 L 38,82 M 42,68 L 42,82" />
-            <path d="M 33,56 C 33,65 37,65 37,56" />
-
-            <!-- Right Character (Bride-ish) -->
-            <!-- Head -->
-            <path d="M 64,48 C 64,41 56,41 56,48 C 56,55 64,55 64,48 Z" fill="#fff"/>
-            <!-- Eyes -->
-            <circle cx="58.5" cy="47" r="0.7" fill="#222"/>
-            <circle cx="61.5" cy="47" r="0.7" fill="#222"/>
-            <!-- Hair Bow/Band -->
-            <path d="M 58,41 Q 60,39 62,41" />
-            <!-- Dress/Body -->
-            <path d="M 55,55 L 51,75 L 65,75 L 63,55 Z" fill="#fff"/>
-            <!-- Legs -->
-            <path d="M 56,75 L 56,82 M 60,75 L 60,82" />
-            <!-- Holding hands middle bridge -->
-            <path d="M 45,58 Q 50,60 52,57" />
-            <!-- Ground stand line -->
-            <path d="M 46,82 L 54,82" />
-        </svg>
-    </div>
-
-    <div class="names-container">
-        <span class="ampersand">&</span>
-        <h2 class="name" style="margin-top: -15px;">Carl</h2>
-        <h2 class="name" style="margin-top: -10px;">Emma</h2>
-    </div>
-
-    <div class="announcement">Are Getting Married!</div>
-
-    <!-- Arrow Divider Doodle -->
-    <svg class="divider-arrow" viewBox="0 0 100 20" fill="none" stroke="#222" stroke-width="1.5">
-        <circle cx="35" cy="10" r="2" fill="#222"/>
-        <path d="M 37,10 L 60,10"/>
-        <path d="M 55,6 L 60,10 L 55,14"/>
-        <path d="M 51,6 L 56,10 L 51,14"/>
-    </svg>
-
-    <div class="date-text">DECEMBER 22, 2026</div>
-    <div class="location-text">CALVARY BAPTIST CHURCH - SJDM</div>
-
-    <div class="rsvp-title">Are you coming?</div>
-
-    <div class="btn-container">
-        <button class="rsvp-btn btn-yes" id="yesBtn" onclick="handleYes()">Yes</button>
-        <button class="rsvp-btn btn-no" id="noBtn" onclick="handleNo()">No</button>
-    </div>
+<div class="card-container">
+    <div class="hearts-container" id="heartsLayer"></div>
+    <div id="yesBtn" class="btn-overlay" onclick="handleYes()"></div>
+    <div id="noBtn" class="btn-overlay" onclick="handleNo()"></div>
 </div>
 
 <script>
+    const heartsLayer = document.getElementById('heartsLayer');
+    const heartColors = ['#ff4d6d', '#ff758f', '#c9184a', '#ffb3c1', '#fae0e4'];
+    
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤️';
+        heart.className = 'heart';
+        heart.style.left = Math.random() * 80 + 10 + '%'; 
+        heart.style.animationDuration = Math.random() * 3 + 4 + 's'; 
+        heart.style.fontSize = Math.random() * 15 + 15 + 'px';
+        heart.style.color = heartColors[Math.floor(Math.random() * heartColors.length)];
+        
+        heartsLayer.appendChild(heart);
+        setTimeout(() => { heart.remove(); }, 7000);
+    }
+    
+    setInterval(createHeart, 800);
+
     let noClickCount = 0;
+    const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
 
+    function triggerYesShake() {
+        yesBtn.classList.remove('shake-animation');
+        void yesBtn.offsetWidth;
+        yesBtn.classList.add('shake-animation');
+    }
+
     function handleYes() {
-        alert("Yay! We can't wait to celebrate with you! 🎉❤️");
+        alert("Yay! We can't wait to celebrate with you! 🎉🍾");
     }
 
     function handleNo() {
         noClickCount++;
-        
         if (noClickCount === 1) {
             alert("Are you sure? 🥺");
-            // Shrink the No button
             noBtn.style.transform = "scale(0.75)";
-            noBtn.style.fontSize = "1.8rem";
-            noBtn.style.padding = "3px 18px";
-        } else if (noClickCount === 2) {
+            triggerYesShake();
+        } 
+        else if (noClickCount === 2) {
             alert("You'll break their hearts! 💔😭");
-            // Shrink even more
-            noBtn.style.transform = "scale(0.5)";
-            noBtn.style.fontSize = "1.2rem";
-            noBtn.style.padding = "2px 10px";
-        } else if (noClickCount >= 3) {
-            alert("We'll miss you! Your No RSVP has been recorded. 😔");
-            // Final shrink state or keep tiny
             noBtn.style.transform = "scale(0.35)";
-            noBtn.style.opacity = "0.7";
+            triggerYesShake();
+        } 
+        else if (noClickCount >= 3) {
+            alert("We'll miss you! Your No RSVP has been recorded. 😔");
+            noBtn.style.transform = "scale(0.1)";
+            noBtn.style.opacity = "0.2";
+            noBtn.onclick = null;
         }
     }
 </script>
